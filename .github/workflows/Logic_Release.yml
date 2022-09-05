@@ -1,0 +1,56 @@
+name: Logic Release
+
+on:
+  push:
+    branches: [ "main" ]
+
+env:
+  NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  LogicPath: source/BenBurgers.Mathematics.Logic
+  LogicExpressionPath: source/BenBurgers.Mathematics.Logic.Expressions
+  VersionMajorMinor: "0.1"
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        projectPath:
+          - source/BenBurgers.Mathematics.Logic
+          - source/BenBurgers.Mathematics.Logic.Expressions
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+    - name: Cache dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget
+    - name: Restore dependencies
+      working-directory: ${{ matrix.projectPath }}
+      run: dotnet restore
+    - name: Build (Test)
+      working-directory: ${{ matrix.projectPath }}
+      run: dotnet build --configuration Test --no-restore
+    - name: Test (x64)
+      working-directory: ${{ matrix.projectPath }}
+      run: dotnet test --configuration Test --no-restore --no-build --verbosity normal
+    - name: Create the package '${{ matrix.projectPath }}'
+      working-directory: ${{ matrix.projectPath }}
+      run: dotnet pack --configuration Release -p:PackageVersion=${{ env.VersionMajorMinor }}.${{ github.run_number }}
+    - name: Publish the package to GitHub Packages Registry
+      working-directory: ${{ matrix.projectPath }}
+      run: dotnet nuget push ./bin/Release/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source https://nuget.pkg.github.com/benburgers/index.json
+    - name: Publish the package to NuGet.org
+      working-directory: ${{ matrix.projectPath }}
+      run: dotnet nuget push ./bin/Release/*.nupkg --api-key ${{ secrets.NUGET_ACCESSTOKEN }} --source https://api.nuget.org/v3/index.json

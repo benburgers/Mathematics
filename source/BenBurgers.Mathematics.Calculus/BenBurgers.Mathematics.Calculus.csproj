@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup Label="Project Properties">
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+		<VersionPrefix>0.1.0</VersionPrefix>
+		<VersionSuffix>$(VersionSuffix)</VersionSuffix>
+		<Authors>benburgers</Authors>
+		<Company>Ben Burgers</Company>
+		<Product>Ben Burgers Mathematics</Product>
+		<Description>Features for simple to advanced mathematics in Calculus.</Description>
+		<Copyright>© 2022 Ben Burgers and contributors</Copyright>
+		<PackageProjectUrl>https://github.com/benburgers/Mathematics</PackageProjectUrl>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<RepositoryUrl>https://github.com/benburgers/Mathematics</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageTags>Mathematics</PackageTags>
+		<PackageReleaseNotes></PackageReleaseNotes>
+		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+		<PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
+		<Configurations>Debug;Test;Release</Configurations>
+		<Platforms>AnyCPU</Platforms>
+	</PropertyGroup>
+
+	<ItemGroup Label="Package">
+		<None Include="..\..\LICENSE" Link="LICENSE">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
+</Project>
