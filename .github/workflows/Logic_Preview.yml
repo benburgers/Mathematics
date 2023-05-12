@@ -1,9 +1,9 @@
 name: Logic Release
 
 on:
-  push:
+  pull_request:
     branches:
-      - main
+      - main    
     tags:
       - "*"
 
@@ -46,10 +46,7 @@ jobs:
       run: dotnet test --configuration Test --no-restore --no-build --verbosity normal
     - name: Create the package '${{ matrix.projectPath }}'
       working-directory: ${{ matrix.projectPath }}
-      run: dotnet pack --configuration Release -p:PackageVersion=${{ github.ref_name }}
+      run: dotnet pack --configuration Test --no-restore --no-build -p:PackageVersion=${{ github.ref_name }}-preview+${{ github.run_number }}
     - name: Publish the package to GitHub Packages Registry
       working-directory: ${{ matrix.projectPath }}
-      run: dotnet nuget push ./bin/Release/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source https://nuget.pkg.github.com/benburgers/index.json
-    - name: Publish the package to NuGet.org
-      working-directory: ${{ matrix.projectPath }}
-      run: dotnet nuget push ./bin/Release/*.nupkg --api-key ${{ secrets.NUGET_ACCESSTOKEN }} --source https://api.nuget.org/v3/index.json
+      run: dotnet nuget push ./bin/Test/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source https://nuget.pkg.github.com/benburgers/index.json

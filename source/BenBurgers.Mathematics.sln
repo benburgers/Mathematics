@@ -18,7 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHub", "GitHub", "{00BEF1
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workflows", "Workflows", "{33EFD389-3E38-4635-A20D-18308996E014}"
 	ProjectSection(SolutionItems) = preProject
-		..\.github\workflows\BuildTest.yml = ..\.github\workflows\BuildTest.yml
+		..\.github\workflows\Logic_Preview.yml = ..\.github\workflows\Logic_Preview.yml
 		..\.github\workflows\Logic_Release.yml = ..\.github\workflows\Logic_Release.yml
 	EndProjectSection
 EndProject
