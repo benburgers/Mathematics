@@ -1,8 +1,10 @@
 ﻿/*
  * Ben Burgers Mathematics
- * © 2022 Ben Burgers and contributors
+ * © 2022-2023 Ben Burgers and contributors
  * Licensed under AGPL 3.0
  */
+
+using BenBurgers.Mathematics.Logic.Propositions.Variables;
 
 namespace BenBurgers.Mathematics.Logic.Expressions.Tests;
 
@@ -20,9 +22,9 @@ public class LogicConjunctionNegationExpressionTests
     private static readonly IReadOnlyList<LogicExpression> Expressions =
         new LogicExpression[]
         {
-            new LogicPropositionVariableExpression(new PropositionVariable("a", TrueGetter)),
-            new LogicPropositionVariableExpression(new PropositionVariable("b", TrueGetter)),
-            new LogicPropositionVariableExpression(new PropositionVariable("c", FalseGetter))
+            new LogicPropositionVariableExpression(new PropositionVariableFunc("a", TrueGetter)),
+            new LogicPropositionVariableExpression(new PropositionVariableFunc("b", TrueGetter)),
+            new LogicPropositionVariableExpression(new PropositionVariableFunc("c", FalseGetter))
         };
 
     [Theory]

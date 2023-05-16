@@ -1,8 +1,10 @@
 ﻿/*
  * Ben Burgers Mathematics
- * © 2022 Ben Burgers and contributors
+ * © 2022-2023 Ben Burgers and contributors
  * Licensed under AGPL 3.0
  */
+
+using BenBurgers.Mathematics.Logic.Propositions.Variables;
 
 namespace BenBurgers.Mathematics.Logic.Expressions.Tests.Propositions;
 
@@ -13,10 +15,10 @@ public class LogicPropositionVariableExpressionTests
     private static readonly IReadOnlyList<PropositionVariable> Variables =
         new PropositionVariable[]
         {
-            new("a", TrueGetter),
-            new("b", FalseGetter),
-            new("foo", TrueGetter),
-            new("bar", FalseGetter)
+            new PropositionVariableFunc("a", TrueGetter),
+            new PropositionVariableFunc("b", FalseGetter),
+            new PropositionVariableFunc("foo", TrueGetter),
+            new PropositionVariableFunc("bar", FalseGetter)
         };
 
     [Theory]

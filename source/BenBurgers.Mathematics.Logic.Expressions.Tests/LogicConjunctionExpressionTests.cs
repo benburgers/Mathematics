@@ -1,8 +1,10 @@
 ﻿/*
  * Ben Burgers Mathematics
- * © 2022 Ben Burgers and contributors
+ * © 2022-2023 Ben Burgers and contributors
  * Licensed under AGPL 3.0
  */
+
+using BenBurgers.Mathematics.Logic.Propositions.Variables;
 
 namespace BenBurgers.Mathematics.Logic.Expressions.Tests;
 
@@ -13,13 +15,13 @@ public class LogicConjunctionExpressionTests
     {
         // Arrange
         var leftGetter = new Func<bool>(() => true);
-        var left = new LogicPropositionVariableExpression(new PropositionVariable("a", leftGetter));
+        var left = new LogicPropositionVariableExpression(new PropositionVariableFunc("a", leftGetter));
         var rightGetter = new Func<bool>(() => false);
-        var right = new LogicPropositionVariableExpression(new PropositionVariable("b", rightGetter));
+        var right = new LogicPropositionVariableExpression(new PropositionVariableFunc("b", rightGetter));
         var others = new LogicPropositionVariableExpression[]
         {
-            new(new PropositionVariable("c", leftGetter)),
-            new(new PropositionVariable("d", rightGetter))
+            new(new PropositionVariableFunc("c", leftGetter)),
+            new(new PropositionVariableFunc("d", rightGetter))
         };
         var conjunctionExpression = new LogicConjunctionExpression(left, right, others);
 

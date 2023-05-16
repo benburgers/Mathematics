@@ -1,8 +1,10 @@
 ﻿/*
  * Ben Burgers Mathematics
- * © 2022 Ben Burgers and contributors
+ * © 2022-2023 Ben Burgers and contributors
  * Licensed under AGPL 3.0
  */
+
+using BenBurgers.Mathematics.Logic.Propositions.Variables;
 
 namespace BenBurgers.Mathematics.Logic.Expressions.Tests;
 
@@ -13,14 +15,14 @@ public class LogicNegationExpressionTests
     private readonly IReadOnlyList<LogicExpression> Expressions =
         new LogicExpression[]
         {
-            new LogicPropositionVariableExpression(new PropositionVariable("a", TrueGetter)),
+            new LogicPropositionVariableExpression(new PropositionVariableFunc("a", TrueGetter)),
             new LogicConjunctionExpression(
-                new LogicPropositionVariableExpression(new PropositionVariable("a", TrueGetter)),
-                new LogicPropositionVariableExpression(new PropositionVariable("b", FalseGetter))),
+                new LogicPropositionVariableExpression(new PropositionVariableFunc("a", TrueGetter)),
+                new LogicPropositionVariableExpression(new PropositionVariableFunc("b", FalseGetter))),
             new LogicDisjunctionExpression(
-                new LogicPropositionVariableExpression(new PropositionVariable("c", TrueGetter)),
-                new LogicPropositionVariableExpression(new PropositionVariable("d", TrueGetter)),
-                new LogicPropositionVariableExpression(new PropositionVariable("e", FalseGetter)))
+                new LogicPropositionVariableExpression(new PropositionVariableFunc("c", TrueGetter)),
+                new LogicPropositionVariableExpression(new PropositionVariableFunc("d", TrueGetter)),
+                new LogicPropositionVariableExpression(new PropositionVariableFunc("e", FalseGetter)))
         };
 
     [Theory]

@@ -1,8 +1,10 @@
 ﻿/*
  * Ben Burgers Mathematics
- * © 2022 Ben Burgers and contributors
+ * © 2022-2023 Ben Burgers and contributors
  * Licensed under AGPL 3.0
  */
+
+using BenBurgers.Mathematics.Logic.Propositions.Variables;
 
 namespace BenBurgers.Mathematics.Logic.Expressions.Tests;
 
@@ -14,8 +16,8 @@ public class LogicImplicationExpressionTests
         // Arrange
         var trueGetter = new Func<bool>(() => true);
         var falseGetter = new Func<bool>(() => false);
-        var antecedent = new LogicPropositionVariableExpression(new PropositionVariable("a", trueGetter));
-        var consequent = new LogicPropositionVariableExpression(new PropositionVariable("b", falseGetter));
+        var antecedent = new LogicPropositionVariableExpression(new PropositionVariableFunc("a", trueGetter));
+        var consequent = new LogicPropositionVariableExpression(new PropositionVariableFunc("b", falseGetter));
         var implicationExpression = new LogicImplicationExpression(antecedent, consequent);
 
         // Act
