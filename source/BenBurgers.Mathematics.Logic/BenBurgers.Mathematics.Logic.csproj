@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup Label="Project Settings">
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFrameworks>net7.0</TargetFrameworks>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
@@ -26,14 +26,14 @@
 	</PropertyGroup>
 
 	<ItemGroup Label="Resources">
-		<EmbeddedResource Update="**\Resources\ExceptionMessages.resx">
+		<EmbeddedResource Update="**\Exceptions\ExceptionMessages.resx">
 			<Generator>ResXFileCodeGenerator</Generator>
 			<LastGenOutput>ExceptionMessages.Designer.cs</LastGenOutput>
 		</EmbeddedResource>
-		<EmbeddedResource Update="**\Resources\ExceptionMessages.*.resx">
+		<EmbeddedResource Update="**\Exceptions\ExceptionMessages.*.resx">
 			<DependentUpon>ExceptionMessages.resx</DependentUpon>
 		</EmbeddedResource>
-		<Compile Update="**\Resources\ExceptionMessages.Designer.cs">
+		<Compile Update="**\Exceptions\ExceptionMessages.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
 			<DependentUpon>ExceptionMessages.resx</DependentUpon>

@@ -4,8 +4,8 @@
  * Licensed under AGPL 3.0
  */
 
-using BenBurgers.Mathematics.Logic.Symbols;
 using System.Collections;
+using System.Diagnostics;
 using System.Text;
 
 namespace BenBurgers.Mathematics.Logic;
@@ -13,51 +13,35 @@ namespace BenBurgers.Mathematics.Logic;
 /// <summary>
 /// A logical formula.
 /// </summary>
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
 public abstract class Formula
-    : IEnumerable<Symbol>
+    : IEnumerable<Formula>
 {
-    private readonly List<Symbol> symbols;
+    private readonly List<Formula> children;
 
     /// <summary>
     /// Initializes a new instance of <see cref="Formula" />
     /// </summary>
     protected internal Formula()
     {
-        this.symbols = new List<Symbol>();
+        this.children = new List<Formula>();
     }
 
     /// <summary>
-    /// Adds a symbol to the formula.
+    /// Initializes a new instance of <see cref="Formula" />.
     /// </summary>
-    /// <param name="symbol">
-    /// The symbol to add to the formula.
-    /// </param>
-    /// <exception cref="LogicFormulaInvalidSymbolInCurrentStateException">
-    /// A <see cref="LogicFormulaInvalidSymbolInCurrentStateException" /> is thrown 
-    /// if the <paramref name="symbol" /> cannot be added in the current state of the formula.
-    /// </exception>
-    protected virtual void Add(Symbol symbol)
+    /// <param name="children">The formula's children.</param>
+    protected internal Formula(IEnumerable<Formula> children)
     {
-        if (!this.AddGuard(symbol))
-            throw new LogicFormulaInvalidSymbolInCurrentStateException(symbol);
-        this.symbols.Add(symbol);
+        this.children = children.ToList();
     }
 
-    /// <summary>
-    /// Performs checks on the symbol before adding it to the formula.
-    /// </summary>
-    /// <param name="symbol">
-    /// The symbol to add.
-    /// </param>
-    /// <returns>
-    /// A <see langword="bool" /> that indicates whether the <paramref name="symbol" /> may be added to the formula.
-    /// </returns>
-    protected abstract bool AddGuard(Symbol symbol);
+    private string DebuggerDisplay => this.ToString();
 
     /// <inheritdoc />
-    public IEnumerator<Symbol> GetEnumerator()
+    public IEnumerator<Formula> GetEnumerator()
     {
-        return this.symbols.GetEnumerator();
+        return this.children.GetEnumerator();
     }
 
     /// <summary>
@@ -69,9 +53,9 @@ public abstract class Formula
     public override string ToString()
     {
         var stringBuilder = new StringBuilder();
-        foreach (var symbol in this.symbols)
+        foreach (var formula in this.children)
         {
-            stringBuilder.Append(symbol.ToString());
+            stringBuilder.Append(formula.ToString());
         }
         return stringBuilder.ToString();
     }

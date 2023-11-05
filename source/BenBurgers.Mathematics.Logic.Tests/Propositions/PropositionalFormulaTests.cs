@@ -5,74 +5,30 @@
  */
 
 using BenBurgers.Mathematics.Logic.Propositions;
+using BenBurgers.Mathematics.Logic.Propositions.Variables;
 using BenBurgers.Mathematics.Logic.Symbols;
 
 namespace BenBurgers.Mathematics.Logic.Tests.Propositions;
 
 public class PropositionalFormulaTests
 {
-    public static readonly IEnumerable<object?[]> AddArguments =
+    public static readonly IEnumerable<object?[]> ToStringArguments =
         new[]
         {
             new object?[]
             {
-                new Symbol[]
-                {
-                    Symbol.PropositionIdentifier("foo"),
-                    Symbol.Disjunction(),
-                    Symbol.PropositionIdentifier("bar")
-                },
-                "foo∨bar",
-                null
+                new PropositionVariableStatic("foo", false).Or(new PropositionVariableStatic("bar", true)),
+                "foo∨bar"
             },
             new object?[]
             {
-                new Symbol[]
-                {
-                    Symbol.PropositionIdentifier("foo"),
-                    Symbol.PropositionIdentifier("bar")
-                },
-                "foo bar",
-                new LogicFormulaInvalidSymbolInCurrentStateException(Symbol.PropositionIdentifier("bar"))
+                new PropositionVariableStatic("foo", false).Or(new PropositionVariableStatic("bar", true).And(new PropositionVariableStatic("lorem", false))),
+                "foo∨bar∧lorem"
             },
             new object?[]
             {
-                new Symbol[]
-                {
-                    Symbol.Disjunction(),
-                    Symbol.Conjunction(),
-                    Symbol.PropositionIdentifier("foo")
-                },
-                "∨∧foo",
-                new LogicFormulaInvalidSymbolInCurrentStateException(Symbol.Conjunction())
-            },
-            new object?[]
-            {
-                new Symbol[]
-                {
-                    Symbol.PropositionIdentifier("foo"),
-                    Symbol.Disjunction(),
-                    Symbol.PropositionIdentifier("bar"),
-                    Symbol.Conjunction(),
-                    Symbol.PropositionIdentifier("lorem")
-                },
-                "foo∨bar∧lorem",
-                null
-            },
-            new object?[]
-            {
-                new Symbol[]
-                {
-                    Symbol.ParenthesisOpen(),
-                    Symbol.PropositionIdentifier("foo"),
-                    Symbol.Disjunction(),
-                    Symbol.PropositionIdentifier("bar"),
-                    Symbol.ParenthesisClose(),
-                    Symbol.Conjunction(),
-                    Symbol.PropositionIdentifier("lorem")
-                },
-                "(foo∨bar)∧lorem",
-                null
+                new PropositionVariableStatic("foo", false).Or(new PropositionVariableStatic("bar", true)).And(new PropositionVariableStatic("lorem", false)),
+                "(foo∨bar)∧lorem"
             },
             new object?[]
             {
@@ -86,28 +42,18 @@ public class PropositionalFormulaTests
                     Symbol.Implication(),
                     Symbol.PropositionIdentifier("lorem")
                 },
-                "(foo∨bar)→lorem",
-                null
+                "(foo∨bar)→lorem"
             }
         };
 
-    [Theory(DisplayName = "Propositional Formula :: Add")]
-    [MemberData(nameof(AddArguments))]
-    public void AddTests(Symbol[] symbols, string representation, Exception? exception)
+    [Theory(DisplayName = $"{nameof(PropositionalFormula)} :: {nameof(ToString)}")]
+    [MemberData(nameof(ToStringArguments))]
+    public void ToStringTests(PropositionalFormula formula, string expected)
     {
-        if (exception is { })
-        {
-            var exceptionType = exception.GetType();
-            Assert.Throws(exceptionType, () => new PropositionalFormula(symbols));
-            return;
-        }
-
         // Act
-        var formula = new PropositionalFormula(symbols);
+        var actual = formula.ToString();
 
         // Assert
-        var symbolsContained = formula.ToArray();
-        Assert.NotEmpty(symbolsContained);
-        Assert.Equal(formula.ToString(), representation);
+        Assert.Equal(expected, actual);
     }
 }

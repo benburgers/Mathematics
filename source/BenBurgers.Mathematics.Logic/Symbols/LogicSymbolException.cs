@@ -4,6 +4,8 @@
  * Licensed under AGPL 3.0
  */
 
+using BenBurgers.Mathematics.Logic.Exceptions;
+
 namespace BenBurgers.Mathematics.Logic.Symbols;
 
 /// <summary>

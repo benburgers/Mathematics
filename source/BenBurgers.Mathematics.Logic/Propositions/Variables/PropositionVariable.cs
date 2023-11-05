@@ -20,7 +20,8 @@ namespace BenBurgers.Mathematics.Logic.Propositions.Variables;
 /// <remarks>
 /// A variable in a propositional formula.
 /// </remarks>
-public abstract class PropositionVariable : Formula
+public abstract class PropositionVariable
+    : PropositionalFormula
 {
     /// <summary>
     /// Initializes a new instance of <see cref="PropositionVariable" />.
@@ -29,13 +30,10 @@ public abstract class PropositionVariable : Formula
     /// The identifier of the proposition variable.
     /// </param>
     protected PropositionVariable(string identifier)
+        : base()
     {
         this.Identifier = identifier;
-        base.Add(SymbolPropositionIdentifier.From(identifier));
     }
-
-    /// <inheritdoc cref="Formula.AddGuard(Symbol)" />
-    protected override bool AddGuard(Symbol symbol) => symbol is SymbolPropositionIdentifier && !this.Any();
 
     /// <summary>
     /// Gets the identifier of the proposition variable.
@@ -45,7 +43,7 @@ public abstract class PropositionVariable : Formula
     /// <summary>
     /// Gets the formulaic symbol that represents the proposition variable.
     /// </summary>
-    public SymbolPropositionIdentifier Symbol => (SymbolPropositionIdentifier)this.First();
+    public SymbolPropositionIdentifier Symbol => Symbols.Symbol.PropositionIdentifier(this.Identifier);
 
     /// <summary>
     /// Gets the value of the proposition value.
