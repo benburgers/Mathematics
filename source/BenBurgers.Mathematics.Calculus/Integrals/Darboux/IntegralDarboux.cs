@@ -9,9 +9,14 @@ using System.Numerics;
 namespace BenBurgers.Mathematics.Calculus.Integrals.Darboux;
 
 /// <summary>
-/// A Darboux integral.
+/// A Riemann-Darboux integral.
 /// </summary>
 /// <typeparam name="TNumber">The type of number in the domain and range of the integral's function.</typeparam>
+/// <remarks>
+///     <a href="https://en.wikipedia.org/wiki/Darboux_integral">Darboux integral (Wikipedia)</a>
+///     <br />
+///     <a href="https://en.wikipedia.org/wiki/Riemann_integral">Riemann integral (Wikipedia)</a>
+/// </remarks>
 public sealed partial class IntegralDarboux<TNumber> : Integral<TNumber, SyncArgs<TNumber>, AsyncArgs<TNumber>>
     where TNumber : INumber<TNumber>
 {
@@ -53,10 +58,7 @@ public sealed partial class IntegralDarboux<TNumber> : Integral<TNumber, SyncArg
         return func(intervalStart) * step;
     }
 
-    /// <summary>
-    /// Calculates an approximation of the integral using the Darboux algorithm.
-    /// </summary>
-    /// <returns>The approximation of the integral with the Darboux algorithm.</returns>
+    /// <inheritdoc />
     public override TNumber Approximate(SyncArgs<TNumber> args)
     {
         var sum = TNumber.Zero;
@@ -76,18 +78,13 @@ public sealed partial class IntegralDarboux<TNumber> : Integral<TNumber, SyncArg
         return sum;
     }
 
-    /// <summary>
-    /// Calculates an approximation of the integral using the Darboux algorithm.
-    /// </summary>
-    /// <param name="args">The arguments for an asynchronous Darboux approximation of the integral.</param>
-    /// <param name="cancellationToken">A cancellation token.</param>
-    /// <returns>The approximation of the integral with the Darboux algorithm.</returns>
+    /// <inheritdoc />
     public override async Task<TNumber> ApproximateAsync(
         AsyncArgs<TNumber> args,
         CancellationToken cancellationToken = default)
     {
         if (args.partitions.Length == 0)
-            throw new ArgumentOutOfRangeException(nameof(args.partitions), args.partitions, "Number of paritions must be greater than zero.");
+            throw new ArgumentOutOfRangeException(nameof(args.partitions), args.partitions, "Number of partitions must be greater than zero.");
 
         var sum = TNumber.Zero;
 

@@ -6,12 +6,12 @@
 
 using System.Numerics;
 
-namespace BenBurgers.Mathematics.Calculus.Integrals.Darboux;
+namespace BenBurgers.Mathematics.Calculus.Integrals.Lebesgue;
 
 /// <summary>
-/// Arguments for a synchronous Riemann-Darboux approximation of an integral.
+/// Arguments for a synchronous Lebesgue approximation of an integral.
 /// </summary>
-/// <typeparam name="TNumber">The type of number in the function's domain and range.</typeparam>
+/// <typeparam name="TNumber">The type of number in the domain and range of the integral's function.</typeparam>
 public readonly struct SyncArgs<TNumber>
     where TNumber : INumber<TNumber>
 {
@@ -31,9 +31,9 @@ public readonly struct SyncArgs<TNumber>
     public readonly TNumber step;
 
     /// <summary>
-    /// The mode of the Riemann-Darboux algorithm.
+    /// The target values of the Lebesgue integral approximation.
     /// </summary>
-    public readonly IntegralDarbouxMode mode;
+    public readonly ReadOnlyMemory<TNumber> targetValues;
 
     /// <summary>
     /// Initializes a new instance of <see cref="SyncArgs{TNumber}" />.
@@ -41,16 +41,16 @@ public readonly struct SyncArgs<TNumber>
     /// <param name="start">The start of the integral approximation.</param>
     /// <param name="end">The end of the integral approximation.</param>
     /// <param name="step">The step of the integral approximation.</param>
-    /// <param name="mode">The mode of the Darboux algorithm.</param>
+    /// <param name="targetValues">The target values of the Lebesgue integral approximation.</param>
     public SyncArgs(
         TNumber start,
         TNumber end,
         TNumber step,
-        IntegralDarbouxMode mode)
+        ReadOnlyMemory<TNumber> targetValues)
     {
         this.start = start;
         this.end = end;
         this.step = step;
-        this.mode = mode;
+        this.targetValues = targetValues;
     }
 }

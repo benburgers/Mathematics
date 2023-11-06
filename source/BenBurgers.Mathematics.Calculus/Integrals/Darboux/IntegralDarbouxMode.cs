@@ -7,7 +7,7 @@
 namespace BenBurgers.Mathematics.Calculus.Integrals.Darboux;
 
 /// <summary>
-/// The mode of calculating the Darboux sum.
+/// The mode of calculating the Riemann-Darboux sum.
 /// </summary>
 public enum IntegralDarbouxMode
 {

@@ -9,8 +9,9 @@ using System.Numerics;
 namespace BenBurgers.Mathematics.Calculus.Integrals.Darboux;
 
 /// <summary>
-/// Arguments for an asynchronous Darboux approximation of an integral.
+/// Arguments for an asynchronous Riemann-Darboux approximation of an integral.
 /// </summary>
+/// <typeparam name="TNumber">The type of number in the domain and range of the integral's function.</typeparam>
 public readonly struct AsyncArgs<TNumber>
     where TNumber : INumber<TNumber>
 {
@@ -25,7 +26,7 @@ public readonly struct AsyncArgs<TNumber>
     public readonly TNumber step;
 
     /// <summary>
-    /// The mode of the Darboux integral approximation algorithm.
+    /// The mode of the Riemann-Darboux integral approximation algorithm.
     /// </summary>
     public readonly IntegralDarbouxMode mode;
 
