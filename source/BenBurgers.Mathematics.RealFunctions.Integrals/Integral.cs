@@ -1,12 +1,19 @@
 ﻿/*
- * Ben Burgers Mathematics
- * © 2022-2023 Ben Burgers and contributors
- * Licensed under AGPL 3.0
+ * This file is part of Ben Burgers Mathematics.
+ * 
+ * Ben Burgers Mathematics is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License 
+ * as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * 
+ * Ben Burgers Mathematics is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
 using System.Numerics;
 
-namespace BenBurgers.Mathematics.Calculus.Integrals;
+namespace BenBurgers.Mathematics.RealFunctions.Integrals;
 
 /// <summary>
 /// Calculates integrals.
@@ -62,23 +69,23 @@ public abstract class Integral<TNumber> : Integral
 /// Represents an integral of a function.
 /// </summary>
 /// <typeparam name="TNumber">The type of number in the function's domain and range.</typeparam>
-/// <typeparam name="TApproximationArgs">The type of arguments for synchronously calculating the approximation of the integral.</typeparam>
-/// <typeparam name="TApproximationAsyncArgs">The type of arguments for asynchronously calculating the approximation of the integral.</typeparam>
-public abstract class Integral<TNumber, TApproximationArgs, TApproximationAsyncArgs> : Integral
+/// <typeparam name="TArgsSync">The type of arguments for the synchronous approximation of the integral.</typeparam>
+/// <typeparam name="TArgsAsync">The type of arguments for the asynchronous approximation of the integral.</typeparam>
+public class Integral<TNumber, TArgsSync, TArgsAsync> : Integral
     where TNumber : INumber<TNumber>
 {
     /// <summary>
-    /// The function that is integrated.
+    /// The algorithm for approximating the integral.
     /// </summary>
-    protected readonly Integral<TNumber>.IntegralFunction func;
+    protected readonly IIntegralAlgorithm<TNumber, TArgsSync, TArgsAsync> algorithm;
 
     /// <summary>
     /// Initializes a new instance of <see cref="Integral" />.
     /// </summary>
-    /// <param name="func">The integral's function.</param>
-    public Integral(Integral<TNumber>.IntegralFunction func)
+    /// <param name="algorithm">The algorithm for the approximation of the integral.</param>
+    public Integral(IIntegralAlgorithm<TNumber, TArgsSync, TArgsAsync> algorithm)
     {
-        this.func = func;
+        this.algorithm = algorithm;
     }
 
     /// <summary>
@@ -86,7 +93,10 @@ public abstract class Integral<TNumber, TApproximationArgs, TApproximationAsyncA
     /// </summary>
     /// <param name="args">Arguments for the synchronous approximation of the integral.</param>
     /// <returns>The approximation of the integral.</returns>
-    public abstract TNumber Approximate(TApproximationArgs args);
+    public TNumber Approximate(TArgsSync args)
+    {
+        return this.algorithm.Approximate(args);
+    }
 
     /// <summary>
     /// Asynchronously calculates the approximation of the integral.
@@ -94,5 +104,8 @@ public abstract class Integral<TNumber, TApproximationArgs, TApproximationAsyncA
     /// <param name="args">Arguments for the asynchronous approximation of the integral.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The approximation of the integral.</returns>
-    public abstract Task<TNumber> ApproximateAsync(TApproximationAsyncArgs args, CancellationToken cancellationToken = default);
+    public Task<TNumber> ApproximateAsync(TArgsAsync args, CancellationToken cancellationToken = default)
+    {
+        return this.algorithm.ApproximateAsync(args, cancellationToken);
+    }
 }

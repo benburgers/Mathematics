@@ -1,11 +1,18 @@
 ﻿/*
- * Ben Burgers Mathematics
- * © 2022-2023 Ben Burgers and contributors
- * Licensed under AGPL 3.0
+ * This file is part of Ben Burgers Mathematics.
+ * 
+ * Ben Burgers Mathematics is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License 
+ * as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * 
+ * Ben Burgers Mathematics is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-using BenBurgers.Mathematics.Calculus.Integrals;
-using BenBurgers.Mathematics.Calculus.Integrals.Darboux;
+using BenBurgers.Mathematics.RealFunctions.Integrals;
+using BenBurgers.Mathematics.RealFunctions.Integrals.Darboux;
 using System.Numerics;
 
 namespace BenBurgers.Mathematics.Calculus.Tests.Integrals.Darboux;
@@ -18,7 +25,7 @@ public sealed class IntegralDarbouxTests
             new object?[]
             {
                 new IntegralDarboux<decimal>(i => i + 1.0m),
-                new SyncArgs<decimal>(
+                new DarbouxStepArgsSync<decimal>(
                     0.0m,
                     100.0m,
                     0.1m,
@@ -28,7 +35,7 @@ public sealed class IntegralDarbouxTests
             new object?[]
             {
                 new IntegralDarboux<decimal>(i => i + 1.0m),
-                new SyncArgs<decimal>(
+                new DarbouxStepArgsSync<decimal>(
                     0.0m,
                     100.0m,
                     0.01m,
@@ -38,7 +45,7 @@ public sealed class IntegralDarbouxTests
             new object?[]
             {
                 new IntegralDarboux<decimal>(i => i + 1.0m),
-                new SyncArgs<decimal>(
+                new DarbouxStepArgsSync<decimal>(
                     0.0m,
                     100.0m,
                     0.001m,
@@ -48,12 +55,34 @@ public sealed class IntegralDarbouxTests
             new object?[]
             {
                 new IntegralDarboux<decimal>(i => i + 1.0m),
-                new SyncArgs<decimal>(
+                new DarbouxStepArgsSync<decimal>(
                     -50.0m,
                     50.0m,
                     0.001m,
                     IntegralDarbouxMode.Upper),
-                100.050000m
+                100.001000m
+            },
+            new object?[]
+            {
+                new IntegralDarboux<decimal>(i => i + 1.0m),
+                new DarbouxIntervalsArgsSync<decimal>(
+                    IntegralDarbouxMode.Lower,
+                    new Memory<decimal>(new decimal[]
+                    {
+                        -50.0m,
+                        -40.0m,
+                        -20.0m,
+                        -15.0m,
+                        -10.0m,
+                        0.0m,
+                        10.0m,
+                        12.0m,
+                        20.0m,
+                        30.0m,
+                        40.0m,
+                        50.0m
+                    })),
+                -319.00m
             }
         };
 
@@ -61,7 +90,7 @@ public sealed class IntegralDarbouxTests
     [MemberData(nameof(DarbouxTestCases))]
     public void DarbouxTest<TNumber>(
         IntegralDarboux<TNumber> integral,
-        SyncArgs<TNumber> args,
+        IDarbouxArgsSync<TNumber> args,
         TNumber expected)
         where TNumber : INumber<TNumber>
     {
@@ -75,7 +104,7 @@ public sealed class IntegralDarbouxTests
             new object?[]
             {
                 new IntegralDarboux<decimal>(i => i + 1.0m),
-                new AsyncArgs<decimal>(
+                new DarbouxArgsAsync<decimal>(
                     new ReadOnlyMemory<Integral<decimal>.Partition>(
                         new Integral<decimal>.Partition[]
                         {
@@ -89,7 +118,7 @@ public sealed class IntegralDarbouxTests
             new object?[]
             {
                 new IntegralDarboux<decimal>(i => i + 1.0m),
-                new AsyncArgs<decimal>(
+                new DarbouxArgsAsync<decimal>(
                     new ReadOnlyMemory<Integral<decimal>.Partition>(
                         new Integral<decimal>.Partition[]
                         {
@@ -104,7 +133,7 @@ public sealed class IntegralDarbouxTests
             new object?[]
             {
                 new IntegralDarboux<decimal>(i => i + 1.0m),
-                new AsyncArgs<decimal>(
+                new DarbouxArgsAsync<decimal>(
                     new ReadOnlyMemory<Integral<decimal>.Partition>(
                         new Integral<decimal>.Partition[]
                         {
@@ -127,7 +156,7 @@ public sealed class IntegralDarbouxTests
             new object?[]
             {
                 new IntegralDarboux<decimal>(i => i + 1.0m),
-                new AsyncArgs<decimal>(
+                new DarbouxArgsAsync<decimal>(
                     new ReadOnlyMemory<Integral<decimal>.Partition>(
                         new Integral<decimal>.Partition[]
                         {
@@ -153,7 +182,7 @@ public sealed class IntegralDarbouxTests
     [MemberData(nameof(DarbouxAsyncTestCases))]
     public async Task DarbouxTestAsync<TNumber>(
         IntegralDarboux<TNumber> integral,
-        AsyncArgs<TNumber> args,
+        DarbouxArgsAsync<TNumber> args,
         TNumber expectedMin,
         TNumber expectedMax)
         where TNumber : INumber<TNumber>

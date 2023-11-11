@@ -1,14 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<TargetFrameworks>net7.0</TargetFrameworks>
+	<PropertyGroup Label="Project Settings">
+		<TargetFramework>net7.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<IsPackable>false</IsPackable>
 		<IsTestProject>true</IsTestProject>
 	</PropertyGroup>
 
-	<ItemGroup>
+	<ItemGroup Label="Package References">
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.1" />
 		<PackageReference Include="xunit" Version="2.4.2" />
 		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
@@ -21,8 +21,8 @@
 		</PackageReference>
 	</ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\BenBurgers.Mathematics.Calculus\BenBurgers.Mathematics.Calculus.csproj" />
+	<ItemGroup Label="Project References">
+		<ProjectReference Include="..\BenBurgers.Mathematics.RealFunctions.Integrals\BenBurgers.Mathematics.RealFunctions.Integrals.csproj" />
 	</ItemGroup>
 
 </Project>
