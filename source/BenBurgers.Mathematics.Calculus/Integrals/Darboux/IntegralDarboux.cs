@@ -13,7 +13,7 @@
 
 using System.Numerics;
 
-namespace BenBurgers.Mathematics.RealFunctions.Integrals.Darboux;
+namespace BenBurgers.Mathematics.Calculus.Integrals.Darboux;
 
 /// <summary>
 /// A Riemann-Darboux integral.
@@ -24,16 +24,13 @@ namespace BenBurgers.Mathematics.RealFunctions.Integrals.Darboux;
 ///     <br />
 ///     <a href="https://en.wikipedia.org/wiki/Riemann_integral">Riemann integral (Wikipedia)</a>
 /// </remarks>
-public sealed partial class IntegralDarboux<TNumber> : Integral<TNumber, IDarbouxArgsSync<TNumber>, DarbouxArgsAsync<TNumber>>
+/// <remarks>
+/// Initializes a new instance of <see cref="IntegralDarboux{TNumber}" />.
+/// </remarks>
+/// <param name="function">The function that is integrated.</param>
+public sealed partial class IntegralDarboux<TNumber>(
+    Integral<TNumber>.IntegralFunction function) : Integral<TNumber, IDarbouxArgsSync<TNumber>, DarbouxArgsAsync<TNumber>>(
+        new IntegralAlgorithmDarboux<TNumber>(function))
     where TNumber : INumber<TNumber>
 {
-    /// <summary>
-    /// Initializes a new instance of <see cref="IntegralDarboux{TNumber}" />.
-    /// </summary>
-    /// <param name="function">The function that is integrated.</param>
-    public IntegralDarboux(
-        Integral<TNumber>.IntegralFunction function)
-        : base(new IntegralAlgorithmDarboux<TNumber>(function))
-    {
-    }
 }

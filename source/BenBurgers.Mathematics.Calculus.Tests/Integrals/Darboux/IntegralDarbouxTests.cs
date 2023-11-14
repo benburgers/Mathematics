@@ -11,8 +11,8 @@
  * You should have received a copy of the GNU General Public License along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-using BenBurgers.Mathematics.RealFunctions.Integrals;
-using BenBurgers.Mathematics.RealFunctions.Integrals.Darboux;
+using BenBurgers.Mathematics.Calculus.Integrals;
+using BenBurgers.Mathematics.Calculus.Integrals.Darboux;
 using System.Numerics;
 
 namespace BenBurgers.Mathematics.Calculus.Tests.Integrals.Darboux;
@@ -22,8 +22,7 @@ public sealed class IntegralDarbouxTests
     public static readonly IEnumerable<object?[]> DarbouxTestCases =
         new[]
         {
-            new object?[]
-            {
+            [
                 new IntegralDarboux<decimal>(i => i + 1.0m),
                 new DarbouxStepArgsSync<decimal>(
                     0.0m,
@@ -31,9 +30,8 @@ public sealed class IntegralDarbouxTests
                     0.1m,
                     IntegralDarbouxMode.Lower),
                 5095.00m
-            },
-            new object?[]
-            {
+            ],
+            [
                 new IntegralDarboux<decimal>(i => i + 1.0m),
                 new DarbouxStepArgsSync<decimal>(
                     0.0m,
@@ -41,9 +39,8 @@ public sealed class IntegralDarbouxTests
                     0.01m,
                     IntegralDarbouxMode.Lower),
                 5099.5000m
-            },
-            new object?[]
-            {
+            ],
+            [
                 new IntegralDarboux<decimal>(i => i + 1.0m),
                 new DarbouxStepArgsSync<decimal>(
                     0.0m,
@@ -51,9 +48,8 @@ public sealed class IntegralDarbouxTests
                     0.001m,
                     IntegralDarbouxMode.Lower),
                 5099.950000m
-            },
-            new object?[]
-            {
+            ],
+            [
                 new IntegralDarboux<decimal>(i => i + 1.0m),
                 new DarbouxStepArgsSync<decimal>(
                     -50.0m,
@@ -61,14 +57,14 @@ public sealed class IntegralDarbouxTests
                     0.001m,
                     IntegralDarbouxMode.Upper),
                 100.001000m
-            },
+            ],
             new object?[]
             {
                 new IntegralDarboux<decimal>(i => i + 1.0m),
                 new DarbouxIntervalsArgsSync<decimal>(
                     IntegralDarbouxMode.Lower,
-                    new Memory<decimal>(new decimal[]
-                    {
+                    new Memory<decimal>(
+                    [
                         -50.0m,
                         -40.0m,
                         -20.0m,
@@ -81,7 +77,7 @@ public sealed class IntegralDarbouxTests
                         30.0m,
                         40.0m,
                         50.0m
-                    })),
+                    ])),
                 -319.00m
             }
         };
@@ -101,42 +97,36 @@ public sealed class IntegralDarbouxTests
     public static readonly IEnumerable<object?[]> DarbouxAsyncTestCases =
         new[]
         {
-            new object?[]
-            {
+            [
                 new IntegralDarboux<decimal>(i => i + 1.0m),
                 new DarbouxArgsAsync<decimal>(
                     new ReadOnlyMemory<Integral<decimal>.Partition>(
-                        new Integral<decimal>.Partition[]
-                        {
+                        [
                             new(0.0m, 100.0m)
-                        }),
+                        ]),
                     0.001m,
                     IntegralDarbouxMode.Lower),
                 5099.950000m,
                 5099.950000m
-            },
-            new object?[]
-            {
+            ],
+            [
                 new IntegralDarboux<decimal>(i => i + 1.0m),
                 new DarbouxArgsAsync<decimal>(
                     new ReadOnlyMemory<Integral<decimal>.Partition>(
-                        new Integral<decimal>.Partition[]
-                        {
+                        [
                             new(0.0m, 50.0m),
                             new(50.0m, 100.0m)
-                        }),
+                        ]),
                     0.001m,
                     IntegralDarbouxMode.Lower),
                 5099.950000m,
                 5099.959999m
-            },
-            new object?[]
-            {
+            ],
+            [
                 new IntegralDarboux<decimal>(i => i + 1.0m),
                 new DarbouxArgsAsync<decimal>(
                     new ReadOnlyMemory<Integral<decimal>.Partition>(
-                        new Integral<decimal>.Partition[]
-                        {
+                        [
                             new(0.0m, 10.0m),
                             new(10.0m, 20.0m),
                             new(20.0m, 30.0m),
@@ -147,19 +137,18 @@ public sealed class IntegralDarbouxTests
                             new(70.0m, 80.0m),
                             new(80.0m, 90.0m),
                             new(90.0m, 100.0m)
-                        }),
+                        ]),
                     0.0001m,
                     IntegralDarbouxMode.Lower),
                 5099.99500000m,
                 5099.99599999m
-            },
+            ],
             new object?[]
             {
                 new IntegralDarboux<decimal>(i => i + 1.0m),
                 new DarbouxArgsAsync<decimal>(
                     new ReadOnlyMemory<Integral<decimal>.Partition>(
-                        new Integral<decimal>.Partition[]
-                        {
+                        [
                             new(-50.0m, -40.0m),
                             new(-40.0m, -30.0m),
                             new(-30.0m, -20.0m),
@@ -170,7 +159,7 @@ public sealed class IntegralDarbouxTests
                             new(20.0m, 30.0m),
                             new(30.0m, 40.0m),
                             new(40.0m, 50.0m)
-                        }),
+                        ]),
                     0.0001m,
                     IntegralDarbouxMode.Upper),
                 100.00000000m,

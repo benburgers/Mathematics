@@ -14,26 +14,22 @@
 using System.Diagnostics;
 using System.Numerics;
 
-namespace BenBurgers.Mathematics.RealFunctions.Integrals.Darboux;
+namespace BenBurgers.Mathematics.Calculus.Integrals.Darboux;
 
 /// <summary>
 /// The Riemann-Darboux algorithm for the approximation of an integral of a real function.
 /// </summary>
 /// <typeparam name="TNumber">The type of number in the integral's number space.</typeparam>
-public sealed partial class IntegralAlgorithmDarboux<TNumber> : IIntegralAlgorithm<TNumber, IDarbouxArgsSync<TNumber>, DarbouxArgsAsync<TNumber>>
+/// <remarks>
+/// Initializes a new instance of <see cref="IntegralAlgorithmDarboux{TNumber}" />.
+/// </remarks>
+/// <param name="function">The function that is integrated.</param>
+public sealed partial class IntegralAlgorithmDarboux<TNumber>(Integral<TNumber>.IntegralFunction function) : IIntegralAlgorithm<TNumber, IDarbouxArgsSync<TNumber>, DarbouxArgsAsync<TNumber>>
     where TNumber : INumber<TNumber>
 {
-    /// <summary>
-    /// Initializes a new instance of <see cref="IntegralAlgorithmDarboux{TNumber}" />.
-    /// </summary>
-    /// <param name="function">The function that is integrated.</param>
-    public IntegralAlgorithmDarboux(Integral<TNumber>.IntegralFunction function)
-    {
-        this.Function = function;
-    }
 
     /// <inheritdoc/>
-    public Integral<TNumber>.IntegralFunction Function { get; }
+    public Integral<TNumber>.IntegralFunction Function { get; } = function;
 
     private static TNumber Infimum(TNumber one, TNumber other)
     {
@@ -73,13 +69,12 @@ public sealed partial class IntegralAlgorithmDarboux<TNumber> : IIntegralAlgorit
 
         // initialize working values
         var values = new Span<TNumber>(
-            new TNumber[]
-            {
+            [
                 intervals[0],
                 function(intervals[0]),
                 intervals[1],
                 function(intervals[1])
-            });
+            ]);
 
         for (var i = 0; i < intervals.Length; i++)
         {
@@ -107,11 +102,10 @@ public sealed partial class IntegralAlgorithmDarboux<TNumber> : IIntegralAlgorit
         var sum = TNumber.Zero;
         var values =
             new Span<TNumber>(
-                new TNumber[]
-                {
+                [
                     function(args.start), // f(xᵢ₋₁)
                     function(startFromStep) // f(xᵢ)
-                });
+                ]);
 
         for (var i = startFromStep; i <= args.end; i += args.step)
         {

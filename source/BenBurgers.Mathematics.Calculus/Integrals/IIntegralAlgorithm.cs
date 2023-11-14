@@ -13,7 +13,7 @@
 
 using System.Numerics;
 
-namespace BenBurgers.Mathematics.RealFunctions.Integrals;
+namespace BenBurgers.Mathematics.Calculus.Integrals;
 
 /// <summary>
 /// A synchronous implementation of an integral algorithm.

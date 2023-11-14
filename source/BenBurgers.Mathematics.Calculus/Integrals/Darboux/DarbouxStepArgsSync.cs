@@ -13,49 +13,41 @@
 
 using System.Numerics;
 
-namespace BenBurgers.Mathematics.RealFunctions.Integrals.Darboux;
+namespace BenBurgers.Mathematics.Calculus.Integrals.Darboux;
 
 /// <summary>
 /// Arguments for a synchronous Riemann-Darboux approximation of an integral.
 /// </summary>
 /// <typeparam name="TNumber">The type of number in the function's domain and range.</typeparam>
-public readonly struct DarbouxStepArgsSync<TNumber> : IDarbouxArgsSync<TNumber>
-    where TNumber : INumber<TNumber>
+/// <remarks>
+/// Initializes a new instance of <see cref="DarbouxStepArgsSync{TNumber}" />.
+/// </remarks>
+/// <param name="start">The start of the integral approximation.</param>
+/// <param name="end">The end of the integral approximation.</param>
+/// <param name="step">The step of the integral approximation.</param>
+/// <param name="mode">The mode of the Darboux algorithm.</param>
+public readonly struct DarbouxStepArgsSync<TNumber>(
+    TNumber start,
+    TNumber end,
+    TNumber step,
+    IntegralDarbouxMode mode) : IDarbouxArgsSync<TNumber>
+    where TNumber : INumberBase<TNumber>
 {
     /// <summary>
     /// The start of the integral approximation.
     /// </summary>
-    public readonly TNumber start;
+    public readonly TNumber start = start;
 
     /// <summary>
     /// The end of the integral approximation.
     /// </summary>
-    public readonly TNumber end;
+    public readonly TNumber end = end;
 
     /// <summary>
     /// The step of the integral approximation.
     /// </summary>
-    public readonly TNumber step;
-
-    /// <summary>
-    /// Initializes a new instance of <see cref="DarbouxStepArgsSync{TNumber}" />.
-    /// </summary>
-    /// <param name="start">The start of the integral approximation.</param>
-    /// <param name="end">The end of the integral approximation.</param>
-    /// <param name="step">The step of the integral approximation.</param>
-    /// <param name="mode">The mode of the Darboux algorithm.</param>
-    public DarbouxStepArgsSync(
-        TNumber start,
-        TNumber end,
-        TNumber step,
-        IntegralDarbouxMode mode)
-    {
-        this.start = start;
-        this.end = end;
-        this.step = step;
-        this.Mode = mode;
-    }
+    public readonly TNumber step = step;
 
     /// <inheritdoc/>
-    public IntegralDarbouxMode Mode { get; }
+    public IntegralDarbouxMode Mode { get; } = mode;
 }

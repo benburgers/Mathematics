@@ -11,45 +11,39 @@
  * You should have received a copy of the GNU General Public License along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
+using BenBurgers.Mathematics.Calculus.Integrals;
 using System.Numerics;
 
-namespace BenBurgers.Mathematics.RealFunctions.Integrals.Darboux;
+namespace BenBurgers.Mathematics.Calculus.Integrals.Darboux;
 
 /// <summary>
 /// Arguments for an asynchronous Riemann-Darboux approximation of an integral.
 /// </summary>
 /// <typeparam name="TNumber">The type of number in the domain and range of the integral's function.</typeparam>
-public readonly struct DarbouxArgsAsync<TNumber>
-    where TNumber : INumber<TNumber>
+/// <remarks>
+/// Initializes a new instance of <see cref="DarbouxArgsAsync{TNumber}" />.
+/// </remarks>
+/// <param name="partitions">The partitions of the integral to divide among threads.</param>
+/// <param name="step">The step of the Darboux integral.</param>
+/// <param name="mode">The mode of the Darboux integral approximation algorithm.</param>
+public readonly struct DarbouxArgsAsync<TNumber>(
+    ReadOnlyMemory<Integral<TNumber>.Partition> partitions,
+    TNumber step,
+    IntegralDarbouxMode mode)
+    where TNumber : INumberBase<TNumber>
 {
     /// <summary>
     /// The partitions of the integral to divide among threads.
     /// </summary>
-    public readonly ReadOnlyMemory<Integral<TNumber>.Partition> partitions;
+    public readonly ReadOnlyMemory<Integral<TNumber>.Partition> partitions = partitions;
 
     /// <summary>
     /// The step of the Darboux integral.
     /// </summary>
-    public readonly TNumber step;
+    public readonly TNumber step = step;
 
     /// <summary>
     /// The mode of the Riemann-Darboux integral approximation algorithm.
     /// </summary>
-    public readonly IntegralDarbouxMode mode;
-
-    /// <summary>
-    /// Initializes a new instance of <see cref="DarbouxArgsAsync{TNumber}" />.
-    /// </summary>
-    /// <param name="partitions">The partitions of the integral to divide among threads.</param>
-    /// <param name="step">The step of the Darboux integral.</param>
-    /// <param name="mode">The mode of the Darboux integral approximation algorithm.</param>
-    public DarbouxArgsAsync(
-        ReadOnlyMemory<Integral<TNumber>.Partition> partitions,
-        TNumber step,
-        IntegralDarbouxMode mode)
-    {
-        this.partitions = partitions;
-        this.step = step;
-        this.mode = mode;
-    }
+    public readonly IntegralDarbouxMode mode = mode;
 }

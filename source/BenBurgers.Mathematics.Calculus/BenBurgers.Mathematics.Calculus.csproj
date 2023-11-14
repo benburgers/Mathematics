@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup Label="Project Settings">
-		<TargetFrameworks>net7.0</TargetFrameworks>
+		<TargetFramework>net8.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
@@ -11,13 +11,13 @@
 		<Authors>benburgers</Authors>
 		<Company>Ben Burgers</Company>
 		<Product>Ben Burgers Mathematics</Product>
-		<Description>Features for simple to advanced mathematics in Logic.</Description>
-		<Copyright>© 2022 Ben Burgers and contributors</Copyright>
+		<Description>Ben Burgers Mathematics, Calculus</Description>
+		<Copyright>© 2022-2023 Ben Burgers and contributors</Copyright>
 		<PackageProjectUrl>https://github.com/benburgers/Mathematics</PackageProjectUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryUrl>https://github.com/benburgers/Mathematics</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
-		<PackageTags>Mathematics</PackageTags>
+		<PackageTags>Mathematics;Calculus;Integrals</PackageTags>
 		<PackageReleaseNotes></PackageReleaseNotes>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 		<PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
@@ -25,11 +25,12 @@
 		<Platforms>AnyCPU</Platforms>
 	</PropertyGroup>
 
-	<ItemGroup Label="Packages">
+	<ItemGroup Label="Package">
 		<None Include="..\..\LICENSE" Link="LICENSE">
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
 		</None>
+		<ProjectReference Include="..\BenBurgers.Mathematics.Numbers\BenBurgers.Mathematics.Numbers.csproj" />
 		<None Update="README.md">
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>

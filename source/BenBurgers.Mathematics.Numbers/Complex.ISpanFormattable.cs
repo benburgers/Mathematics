@@ -11,20 +11,13 @@
  * You should have received a copy of the GNU General Public License along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-namespace BenBurgers.Mathematics.RealFunctions.Integrals.Darboux;
+namespace BenBurgers.Mathematics.Numbers;
 
-/// <summary>
-/// The mode of calculating the Riemann-Darboux sum.
-/// </summary>
-public enum IntegralDarbouxMode
+public readonly partial struct Complex<TComplexComponent>
 {
-    /// <summary>
-    /// Calculate the lower Darboux sum.
-    /// </summary>
-    Lower,
-
-    /// <summary>
-    /// Calculate the upper Darboux sum.
-    /// </summary>
-    Upper
+    /// <inheritdoc/>
+    public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
+    {
+        throw new NotImplementedException();
+    }
 }

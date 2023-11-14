@@ -13,31 +13,25 @@
 
 using System.Numerics;
 
-namespace BenBurgers.Mathematics.RealFunctions.Integrals.Darboux;
+namespace BenBurgers.Mathematics.Calculus.Integrals.Darboux;
 
 /// <summary>
 /// Arguments for synchronously approximating an integral using the Riemann-Darboux algorithm, with specified intervals.
 /// </summary>
 /// <typeparam name="TNumber">The type of number in the integral's number space.</typeparam>
-public readonly struct DarbouxIntervalsArgsSync<TNumber> : IDarbouxArgsSync<TNumber>
-    where TNumber : INumber<TNumber>
+/// <remarks>
+/// Initializes a new instance of <see cref="DarbouxIntervalsArgsSync{TNumber}" />.
+/// </remarks>
+/// <param name="mode">The mode of the Riemann-Darboux algorithm.</param>
+/// <param name="intervals">The intervals for which to approximate the integral.</param>
+public readonly struct DarbouxIntervalsArgsSync<TNumber>(IntegralDarbouxMode mode, Memory<TNumber> intervals) : IDarbouxArgsSync<TNumber>
+    where TNumber : INumberBase<TNumber>
 {
     /// <summary>
     /// The intervals to use for synchronously approximating an integral using the Riemann-Darboux algorithm.
     /// </summary>
-    public readonly Memory<TNumber> Intervals;
-
-    /// <summary>
-    /// Initializes a new instance of <see cref="DarbouxIntervalsArgsSync{TNumber}" />.
-    /// </summary>
-    /// <param name="mode">The mode of the Riemann-Darboux algorithm.</param>
-    /// <param name="intervals">The intervals for which to approximate the integral.</param>
-    public DarbouxIntervalsArgsSync(IntegralDarbouxMode mode, Memory<TNumber> intervals)
-    {
-        this.Mode = mode;
-        this.Intervals = intervals;
-    }
+    public readonly Memory<TNumber> Intervals = intervals;
 
     /// <inheritdoc/>
-    public readonly IntegralDarbouxMode Mode { get; }
+    public readonly IntegralDarbouxMode Mode { get; } = mode;
 }

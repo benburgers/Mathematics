@@ -13,7 +13,7 @@
 
 using System.Numerics;
 
-namespace BenBurgers.Mathematics.RealFunctions.Integrals;
+namespace BenBurgers.Mathematics.Calculus.Integrals;
 
 /// <summary>
 /// Calculates integrals.
@@ -27,33 +27,27 @@ public abstract class Integral
 /// </summary>
 /// <typeparam name="TNumber">The type of number in the function's domain and range.</typeparam>
 public abstract class Integral<TNumber> : Integral
-    where TNumber : INumber<TNumber>
+    where TNumber : INumberBase<TNumber>
 {
     /// <summary>
     /// A partition of an integral's approximation.
     /// </summary>
-    public readonly struct Partition
+    /// <remarks>
+    /// Initializes a new instance of <see cref="Partition" />.
+    /// </remarks>
+    /// <param name="start">The start of the partition.</param>
+    /// <param name="end">The end of the partition.</param>
+    public readonly struct Partition(TNumber start, TNumber end)
     {
         /// <summary>
         /// The start of the partition.
         /// </summary>
-        public readonly TNumber start;
+        public readonly TNumber start = start;
 
         /// <summary>
         /// The end of the partition.
         /// </summary>
-        public readonly TNumber end;
-
-        /// <summary>
-        /// Initializes a new instance of <see cref="Partition" />.
-        /// </summary>
-        /// <param name="start">The start of the partition.</param>
-        /// <param name="end">The end of the partition.</param>
-        public Partition(TNumber start, TNumber end)
-        {
-            this.start = start;
-            this.end = end;
-        }
+        public readonly TNumber end = end;
     }
 
     /// <summary>
@@ -71,22 +65,17 @@ public abstract class Integral<TNumber> : Integral
 /// <typeparam name="TNumber">The type of number in the function's domain and range.</typeparam>
 /// <typeparam name="TArgsSync">The type of arguments for the synchronous approximation of the integral.</typeparam>
 /// <typeparam name="TArgsAsync">The type of arguments for the asynchronous approximation of the integral.</typeparam>
-public class Integral<TNumber, TArgsSync, TArgsAsync> : Integral
+/// <remarks>
+/// Initializes a new instance of <see cref="Integral" />.
+/// </remarks>
+/// <param name="algorithm">The algorithm for the approximation of the integral.</param>
+public class Integral<TNumber, TArgsSync, TArgsAsync>(IIntegralAlgorithm<TNumber, TArgsSync, TArgsAsync> algorithm) : Integral
     where TNumber : INumber<TNumber>
 {
     /// <summary>
     /// The algorithm for approximating the integral.
     /// </summary>
-    protected readonly IIntegralAlgorithm<TNumber, TArgsSync, TArgsAsync> algorithm;
-
-    /// <summary>
-    /// Initializes a new instance of <see cref="Integral" />.
-    /// </summary>
-    /// <param name="algorithm">The algorithm for the approximation of the integral.</param>
-    public Integral(IIntegralAlgorithm<TNumber, TArgsSync, TArgsAsync> algorithm)
-    {
-        this.algorithm = algorithm;
-    }
+    protected readonly IIntegralAlgorithm<TNumber, TArgsSync, TArgsAsync> algorithm = algorithm;
 
     /// <summary>
     /// Calculates the approximation of the integral.

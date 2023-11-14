@@ -11,19 +11,10 @@
  * You should have received a copy of the GNU General Public License along with Foobar. If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System.Numerics;
+namespace BenBurgers.Mathematics.Numbers;
 
-namespace BenBurgers.Mathematics.RealFunctions.Integrals.Darboux;
-
-/// <summary>
-/// Arguments for a synchronous approximation of an integral using the Riemann-Darboux algorithm.
-/// </summary>
-/// <typeparam name="TNumber">The type of number.</typeparam>
-public interface IDarbouxArgsSync<TNumber>
-    where TNumber : INumber<TNumber>
+public readonly partial struct Complex<TComplexComponent>
 {
-    /// <summary>
-    /// The mode of Riemann-Darboux algorithm.
-    /// </summary>
-    public IntegralDarbouxMode Mode { get; }
+    /// <inheritdoc/>
+    public static Complex<TComplexComponent> NegativeOne => throw new NotImplementedException();
 }
