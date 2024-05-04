@@ -1,116 +1,76 @@
 ﻿/*
- * Ben Burgers Mathematics
- * © 2022 Ben Burgers and contributors
- * Licensed under AGPL 3.0
+ * This file is part of Ben Burgers Mathematics.
+ * 
+ * Ben Burgers Mathematics is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License 
+ * as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * 
+ * Ben Burgers Mathematics is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with Ben Burgers Mathematics. If not, see <https://www.gnu.org/licenses/>.
  */
-
-using BenBurgers.Mathematics.Logic.Symbols;
 
 namespace BenBurgers.Mathematics.Logic.Propositions;
 
 /// <summary>
 /// A propositional formula.
 /// </summary>
-public sealed class PropositionalFormula
+public abstract class PropositionalFormula
     : Formula
 {
-    private enum State
+    /// <summary>
+    /// Initializes a new instance of <see cref="PropositionalFormula" />.
+    /// </summary>
+    protected PropositionalFormula()
+        : base()
     {
-        /// <summary>
-        /// Ready to accept a new (sub)formula.
-        /// </summary>
-        Empty,
-
-        /// <summary>
-        /// An opening parenthesis was encountered.
-        /// </summary>
-        EnclosureStart,
-
-        /// <summary>
-        /// A closing parenthesis was encountered.
-        /// </summary>
-        EnclosureEnd,
-
-        /// <summary>
-        /// Receiving an identifier.
-        /// </summary>
-        Identifier,
-
-        /// <summary>
-        /// Receiving a binary expression.
-        /// </summary>
-        Binary
     }
-
-    private int level;
-    private State state;
 
     /// <summary>
     /// Initializes a new instance of <see cref="PropositionalFormula" />.
     /// </summary>
-    /// <param name="symbols">
-    /// The symbols that comprise the formula.
-    /// </param>
-    /// <exception cref="LogicFormulaEmptyException">
-    /// A <see cref="LogicFormulaEmptyException" /> is thrown if the formula is empty.
-    /// </exception>
-    /// <exception cref="LogicFormulaInvalidSymbolInCurrentStateException">
-    /// A <see cref="LogicFormulaInvalidSymbolInCurrentStateException" /> is thrown if the syntax of the <paramref name="symbols" /> is invalid for a formula.
-    /// </exception>
-    public PropositionalFormula(IEnumerable<Symbol> symbols)
-        : base()
+    /// <param name="children">The propositional formula's children.</param>
+    protected PropositionalFormula(IEnumerable<PropositionalFormula> children)
+        : base(children)
     {
-        this.level = 0;
-        foreach (var symbol in symbols)
-            this.Add(symbol);
-        if (this.state == State.Empty)
-            throw new LogicFormulaEmptyException();
-        if (this.level != 0)
-            throw new LogicFormulaEmptyException();
     }
 
-    /// <inheritdoc />
-    protected override bool AddGuard(Symbol symbol)
+    /// <summary>
+    /// Creates a conjunction of the current formula and other formulae.
+    /// </summary>
+    /// <param name="other">The other formula.</param>
+    /// <param name="rest">More formulae, if applicable.</param>
+    /// <returns>
+    /// A conjunction of propositional formulae.
+    /// </returns>
+    public PropositionalFormulaConjunction And(PropositionalFormula other, params PropositionalFormula[] rest)
     {
-        bool IsBinary()
+        var all = new Queue<PropositionalFormula>(new PropositionalFormula[] { this, other }.Concat(rest));
+        var current = new PropositionalFormulaConjunction(all.Dequeue(), all.Dequeue());
+        while (all.Count > 0)
         {
-            return symbol is
-                SymbolDisjunction
-                or SymbolDisjunctionExclusive
-                or SymbolDisjunctionNegation
-                or SymbolConjunction
-                or SymbolConjunctionNegation
-                or SymbolImplication
-                or SymbolEquivalence;
+            current = new PropositionalFormulaConjunction(all.Dequeue(), current);
         }
-
-        switch (this.state)
-        {
-            case State.Empty when symbol is SymbolParenthesisOpening:
-                this.state = State.EnclosureStart;
-                return true;
-            case State.Empty when symbol is SymbolPropositionIdentifier:
-                this.state = State.Identifier;
-                return true;
-            case State.EnclosureStart when symbol is SymbolPropositionIdentifier:
-                this.state = State.Identifier;
-                level++;
-                return true;
-            case State.EnclosureEnd when IsBinary():
-            case State.Identifier when IsBinary():
-                this.state = State.Binary;
-                return true;
-            case State.Identifier when symbol is SymbolParenthesisClosing && this.level == 0:
-                return false;
-            case State.Identifier when symbol is SymbolParenthesisClosing:
-                this.state = State.EnclosureEnd;
-                level--;
-                return true;
-            case State.Binary when symbol is SymbolPropositionIdentifier:
-                this.state = State.Identifier;
-                return true;
-            default:
-                return false;
-        }
+        return current;
     }
+
+    /// <summary>
+    /// Creates a disjunction of the current formula and other formulae.
+    /// </summary>
+    /// <param name="other">The other formula.</param>
+    /// <param name="rest">More formulae, if applicable.</param>
+    /// <returns>
+    /// A disjunction of propositional formulae.
+    /// </returns>
+    public PropositionalFormulaDisjunction Or(PropositionalFormula other, params PropositionalFormula[] rest) =>
+        new(rest.Prepend(other).Prepend(this));
+
+    /// <summary>
+    /// Returns the <see cref="string" /> representation of the propositional formula.
+    /// </summary>
+    /// <returns>
+    /// The <see cref="string" /> representation of the propositional formula.
+    /// </returns>
+    public override abstract string ToString();
 }

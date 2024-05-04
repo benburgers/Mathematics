@@ -1,10 +1,18 @@
 ﻿/*
- * Ben Burgers Mathematics
- * © 2022 Ben Burgers and contributors
- * Licensed under AGPL 3.0
+ * This file is part of Ben Burgers Mathematics.
+ * 
+ * Ben Burgers Mathematics is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License 
+ * as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * 
+ * Ben Burgers Mathematics is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with Ben Burgers Mathematics. If not, see <https://www.gnu.org/licenses/>.
  */
 
 using BenBurgers.Mathematics.Logic.Expressions.Propositions;
+using BenBurgers.Mathematics.Logic.Propositions.Variables;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 
@@ -27,7 +35,7 @@ public sealed class LogicExpressionTranslatingVisitor
     }
 
     /// <inheritdoc />
-    [return: NotNullIfNotNull("node")]
+    [return: NotNullIfNotNull(nameof(node))]
     public override LogicExpression? Visit(Expression? node)
     {
         return (LogicExpression?)base.Visit(node);
@@ -86,7 +94,7 @@ public sealed class LogicExpressionTranslatingVisitor
         var variableType = node.Type;
         if (!this.variables.TryGetValue(node.Name!, out var propositionValueGetter) || propositionValueGetter is null)
             this.variables[node.Name!] = propositionValueGetter = new Func<bool>(() => true);
-        return new LogicPropositionVariableExpression(new PropositionVariable(node.Name!, propositionValueGetter!));
+        return new LogicPropositionVariableExpression(new PropositionVariableFunc(node.Name!, propositionValueGetter!));
     }
 
     /// <inheritdoc />

@@ -1,113 +1,53 @@
 ﻿/*
- * Ben Burgers Mathematics
- * © 2022 Ben Burgers and contributors
- * Licensed under AGPL 3.0
+ * This file is part of Ben Burgers Mathematics.
+ * 
+ * Ben Burgers Mathematics is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License 
+ * as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * 
+ * Ben Burgers Mathematics is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with Ben Burgers Mathematics. If not, see <https://www.gnu.org/licenses/>.
  */
 
 using BenBurgers.Mathematics.Logic.Propositions;
-using BenBurgers.Mathematics.Logic.Symbols;
+using BenBurgers.Mathematics.Logic.Propositions.Variables;
 
 namespace BenBurgers.Mathematics.Logic.Tests.Propositions;
 
 public class PropositionalFormulaTests
 {
-    public static readonly IEnumerable<object?[]> AddArguments =
-        new[]
+    public static readonly TheoryData<PropositionalFormula, string> ToStringArguments =
+        new()
         {
-            new object?[]
             {
-                new Symbol[]
-                {
-                    Symbol.PropositionIdentifier("foo"),
-                    Symbol.Disjunction(),
-                    Symbol.PropositionIdentifier("bar")
-                },
-                "foo∨bar",
-                null
+                new PropositionVariableStatic("foo", false)
+                    .Or(new PropositionVariableStatic("bar", true)),
+                "foo∨bar"
             },
-            new object?[]
             {
-                new Symbol[]
-                {
-                    Symbol.PropositionIdentifier("foo"),
-                    Symbol.PropositionIdentifier("bar")
-                },
-                "foo bar",
-                new LogicFormulaInvalidSymbolInCurrentStateException(Symbol.PropositionIdentifier("bar"))
+                new PropositionVariableStatic("foo", false)
+                    .Or(new PropositionVariableStatic("bar", true))
+                    .And(new PropositionVariableStatic("lorem", false)),
+                "foo∨bar∧lorem"
             },
-            new object?[]
             {
-                new Symbol[]
-                {
-                    Symbol.Disjunction(),
-                    Symbol.Conjunction(),
-                    Symbol.PropositionIdentifier("foo")
-                },
-                "∨∧foo",
-                new LogicFormulaInvalidSymbolInCurrentStateException(Symbol.Conjunction())
-            },
-            new object?[]
-            {
-                new Symbol[]
-                {
-                    Symbol.PropositionIdentifier("foo"),
-                    Symbol.Disjunction(),
-                    Symbol.PropositionIdentifier("bar"),
-                    Symbol.Conjunction(),
-                    Symbol.PropositionIdentifier("lorem")
-                },
-                "foo∨bar∧lorem",
-                null
-            },
-            new object?[]
-            {
-                new Symbol[]
-                {
-                    Symbol.ParenthesisOpen(),
-                    Symbol.PropositionIdentifier("foo"),
-                    Symbol.Disjunction(),
-                    Symbol.PropositionIdentifier("bar"),
-                    Symbol.ParenthesisClose(),
-                    Symbol.Conjunction(),
-                    Symbol.PropositionIdentifier("lorem")
-                },
-                "(foo∨bar)∧lorem",
-                null
-            },
-            new object?[]
-            {
-                new Symbol[]
-                {
-                    Symbol.ParenthesisOpen(),
-                    Symbol.PropositionIdentifier("foo"),
-                    Symbol.Disjunction(),
-                    Symbol.PropositionIdentifier("bar"),
-                    Symbol.ParenthesisClose(),
-                    Symbol.Implication(),
-                    Symbol.PropositionIdentifier("lorem")
-                },
-                "(foo∨bar)→lorem",
-                null
+                new PropositionVariableStatic("foo", false)
+                    .And(new PropositionVariableStatic("bar", true)
+                        .Or(new PropositionVariableStatic("lorem", false))),
+                "foo∧(bar∨lorem)"
             }
         };
 
-    [Theory(DisplayName = "Propositional Formula :: Add")]
-    [MemberData(nameof(AddArguments))]
-    public void AddTests(Symbol[] symbols, string representation, Exception? exception)
+    [Theory(DisplayName = $"{nameof(PropositionalFormula)} :: {nameof(ToString)}")]
+    [MemberData(nameof(ToStringArguments))]
+    public void ToStringTests(PropositionalFormula formula, string expected)
     {
-        if (exception is { })
-        {
-            var exceptionType = exception.GetType();
-            Assert.Throws(exceptionType, () => new PropositionalFormula(symbols));
-            return;
-        }
-
         // Act
-        var formula = new PropositionalFormula(symbols);
+        var actual = formula.ToString();
 
         // Assert
-        var symbolsContained = formula.ToArray();
-        Assert.NotEmpty(symbolsContained);
-        Assert.Equal(formula.ToString(), representation);
+        Assert.Equal(expected, actual);
     }
 }

@@ -2,21 +2,20 @@ name: Logic Release
 
 on:
   push:
-    branches: [ "main" ]
-
-env:
-  NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  LogicPath: source/BenBurgers.Mathematics.Logic
-  LogicExpressionPath: source/BenBurgers.Mathematics.Logic.Expressions
-  VersionMajorMinor: "0.1"
+    branches:
+      - main
+    tags:
+      - "*"
 
 jobs:
-  build:
+  BuildAndRelease:
     strategy:
+      fail-fast: true
       matrix:
         projectPath:
           - source/BenBurgers.Mathematics.Logic
           - source/BenBurgers.Mathematics.Logic.Expressions
+      max-parallel: 1
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -47,7 +46,7 @@ jobs:
       run: dotnet test --configuration Test --no-restore --no-build --verbosity normal
     - name: Create the package '${{ matrix.projectPath }}'
       working-directory: ${{ matrix.projectPath }}
-      run: dotnet pack --configuration Release -p:PackageVersion=${{ env.VersionMajorMinor }}.${{ github.run_number }}
+      run: dotnet pack --configuration Release -p:PackageVersion=${{ github.ref_name }}
     - name: Publish the package to GitHub Packages Registry
       working-directory: ${{ matrix.projectPath }}
       run: dotnet nuget push ./bin/Release/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source https://nuget.pkg.github.com/benburgers/index.json

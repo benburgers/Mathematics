@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup Label="Project Properties">
-		<TargetFramework>net6.0</TargetFramework>
+	<PropertyGroup Label="Project Settings">
+		<TargetFrameworks>net8.0;net9.0</TargetFrameworks>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
@@ -11,8 +11,8 @@
 		<Authors>benburgers</Authors>
 		<Company>Ben Burgers</Company>
 		<Product>Ben Burgers Mathematics</Product>
-		<Description>Features for simple to advanced mathematics in Geometry.</Description>
-		<Copyright>© 2022 Ben Burgers and contributors</Copyright>
+		<Description>Features in mathematics belonging to the 51-XX Geometry classification.</Description>
+		<Copyright>© 2022-2023 Ben Burgers and contributors</Copyright>
 		<PackageProjectUrl>https://github.com/benburgers/Mathematics</PackageProjectUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryUrl>https://github.com/benburgers/Mathematics</RepositoryUrl>
@@ -27,6 +27,10 @@
 
 	<ItemGroup Label="Package">
 		<None Include="..\..\LICENSE" Link="LICENSE">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+		<None Update="README.md">
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
 		</None>
